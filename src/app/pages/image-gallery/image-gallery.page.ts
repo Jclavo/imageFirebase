@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 
+import { ImageService } from '../../services/firebase/image.service';
+import { ImageStoreService } from '../../services/firebase/image-store.service';
 import { ImageModel } from '../../models/image.model';
 
 @Component({
@@ -12,10 +14,13 @@ export class ImageGalleryPage implements OnInit {
   @ViewChild('inputcamera', { static: false }) cameraInput: ElementRef;
 
   private images: Array<ImageModel> = [];
-  
-  constructor() { }
+
+  constructor(private imageService: ImageService,
+    private imageStoreService: ImageStoreService) { }
 
   ngOnInit() {
+    //this.imageStoreService.getAll();
+    this.getImages();
   }
 
   ionViewDidEnter() {
@@ -33,22 +38,33 @@ export class ImageGalleryPage implements OnInit {
 
         let base64 = r.target.result as string;
 
-        this.images.push(new ImageModel(base64,imageFile));
+        //this.images.push(new ImageModel(base64,imageFile));
 
       };
 
       //console.log('imagem: ', element.files[0]);
       reader.readAsDataURL(element.files[0]);
       imageFile = element.files[0];
+      this.imageStoreService.save(imageFile);
     };
   }
 
 
-  selectPicture()
-  {
+  selectPicture() {
     console.log('oliii');
-      const element = this.cameraInput.nativeElement as HTMLInputElement;
-      element.click();
+    const element = this.cameraInput.nativeElement as HTMLInputElement;
+    element.click();
+  }
+
+  getImages() {
+    this.imageService.getAll().subscribe(dataImage => {
+      this.images = dataImage;
+    });
+  }
+
+  delete(id: string, name: string)
+  {
+    this.imageStoreService.delete(id,name);
   }
 
 }

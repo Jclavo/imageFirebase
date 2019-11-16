@@ -1,13 +1,16 @@
 export class ImageModel {
 
-    public base64: string;
-    public file: any;
+    // public base64: string;
+    // public file: any;
+    public id?: string;
+    public name: string;
+    public path: string;
 
-
-    constructor(base64:string, file: any)
+    constructor(id: string, name: string, path: string)
     {
-        this.base64 = base64;
-        this.file = file;
+        this.id = id;
+        this.name = name;
+        this.path = path;
     }
 
 }

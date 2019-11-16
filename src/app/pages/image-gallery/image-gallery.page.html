@@ -10,11 +10,11 @@
     <ion-item-sliding *ngFor="let image of images">
 
       <ion-item>
-        <img name="image" [src]="image.base64">
+        <img name="image" [src]="image.path">
       </ion-item>
 
       <ion-item-options side="end">
-        <ion-item-option color="danger" expandable>
+        <ion-item-option color="danger" (click)="delete(image.id,image.name)" expandable>
             <ion-icon slot="icon-only" name="trash"></ion-icon>
         </ion-item-option>
       </ion-item-options>
